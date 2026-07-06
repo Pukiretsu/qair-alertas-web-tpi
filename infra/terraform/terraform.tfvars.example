@@ -1,0 +1,9 @@
+aws_region           = "us-east-1"
+project_name         = "qair"
+environment          = "prod"
+bucket_name          = "qair-prod-spa-tu-sufijo-unico"
+force_destroy_bucket = false
+cloudfront_price_class = "PriceClass_100"
+
+# domain_aliases      = ["qair.example.com"]
+# acm_certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"

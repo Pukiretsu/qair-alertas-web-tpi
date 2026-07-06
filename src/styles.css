@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #06111f;
+}
+
+::selection {
+  background: rgba(20, 184, 166, 0.35);
+  color: white;
+}
+
+@layer components {
+  .glass-panel {
+    @apply border border-white/10 bg-white/[0.06] shadow-soft backdrop-blur-2xl;
+  }
+
+  .section-shell {
+    @apply mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8;
+  }
+
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950;
+  }
+}
