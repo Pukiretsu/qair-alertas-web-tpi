@@ -56,5 +56,5 @@ export const resources = [
 export const repository = {
   title: 'Repositorio GitHub',
   description: 'Código fuente, frontend, prototipo de alertas, infraestructura como código y pipeline de despliegue.',
-  href: repositoryUrl,
+  href: 'https://github.com/Pukiretsu/alertas-sisaire',
 };
