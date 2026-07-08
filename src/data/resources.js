@@ -1,5 +1,5 @@
 const docsBaseUrl = import.meta.env.VITE_PUBLIC_DOCS_BASE_URL || 'https://qair-public-assets.s3.amazonaws.com/docs';
-const repositoryUrl = import.meta.env.VITE_GITHUB_REPOSITORY_URL || 'https://github.com/organization/qair-alertas';
+const repositoryUrl = import.meta.env.VITE_GITHUB_REPOSITORY_URL || 'https://github.com/Pukiretsu/qair-alertas-web-tpi';
 
 export const resources = [
   {
@@ -56,5 +56,5 @@ export const resources = [
 export const repository = {
   title: 'Repositorio GitHub',
   description: 'Código fuente, frontend, prototipo de alertas, infraestructura como código y pipeline de despliegue.',
-  href: 'https://github.com/Pukiretsu/alertas-sisaire',
+  href: repositoryUrl,
 };

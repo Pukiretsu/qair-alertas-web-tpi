@@ -12,6 +12,8 @@ permissions:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  TF_STATE_REGION: ${{ vars.TF_STATE_REGION || vars.AWS_REGION || 'us-east-1' }}
+  TF_STATE_KEY: ${{ vars.TF_STATE_KEY || 'qair/prod/terraform.tfstate' }}
   TF_VAR_project_name: qair
   TF_VAR_environment: prod
   TF_VAR_bucket_name: ${{ vars.QAIR_SPA_BUCKET_NAME }}
@@ -54,24 +56,38 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.8.5
+          terraform_version: 1.10.5
           terraform_wrapper: false
 
-      - name: Terraform init
+      - name: Check required repository variables
+        run: |
+          test -n "${{ vars.TF_STATE_BUCKET_NAME }}" || (echo "Missing repository variable TF_STATE_BUCKET_NAME" && exit 1)
+          test -n "${{ vars.QAIR_SPA_BUCKET_NAME }}" || (echo "Missing repository variable QAIR_SPA_BUCKET_NAME" && exit 1)
+
+      - name: Terraform init with S3 remote state
         working-directory: infra/terraform
-        run: terraform init -input=false
+        run: |
+          terraform init -input=false \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET_NAME }}" \
+            -backend-config="key=${TF_STATE_KEY}" \
+            -backend-config="region=${TF_STATE_REGION}" \
+            -backend-config="use_lockfile=true"
 
       - name: Terraform format check
         working-directory: infra/terraform
-        run: terraform fmt -check
+        run: terraform fmt -check -recursive
 
       - name: Terraform validate
         working-directory: infra/terraform
         run: terraform validate
 
+      - name: Terraform plan
+        working-directory: infra/terraform
+        run: terraform plan -input=false -out=tfplan
+
       - name: Terraform apply
         working-directory: infra/terraform
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false tfplan
 
       - name: Read Terraform outputs
         id: tf_outputs
